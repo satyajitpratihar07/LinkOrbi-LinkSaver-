@@ -1,0 +1,121 @@
+:root {
+    --primary-color: #6a11cb;
+    --secondary-color: #2575fc;
+    --background-color: #f0f2f5;
+    --container-bg: #ffffff;
+    --text-color: #333;
+    --border-color: #e0e0e0;
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    min-height: 100vh;
+}
+
+.container {
+    width: 100%;
+    max-width: 700px;
+    background-color: var(--container-bg);
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 8px Gg30px rgba(0, 0, 0, 0.1);
+}
+
+h1 { text-align: center; color: var(--primary-color); }
+.hidden { display: none; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+#app-view, #auth-view { animation: fadeIn 0.5s ease-out; }
+
+#auth-view { text-align: center; }
+#auth-view p { color: #666; margin-bottom: 20px; }
+
+#login-form, #signup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+#login-form input, #signup-form input {
+    padding: 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+#login-form button, #signup-form button {
+    padding: 14px;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+#login-form button:hover, #signup-form button:hover { transform: translateY(-2px); }
+
+.form-switcher { font-size: 14px; }
+.form-switcher a { color: var(--primary-color); text-decoration: none; font-weight: 600; }
+
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #aaa;
+    margin: 25px 0;
+}
+.divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--border-color);
+}
+.divider:not(:empty)::before { margin-right: .5em; }
+.divider:not(:empty)::after { margin-left: .5em; }
+
+#google-login-btn {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 16px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+#google-login-btn:hover { background-color: #f8f9fa; }
+#google-login-btn img { width: 20px; margin-right: 12px; }
+
+
+header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+header h1 { margin: 0; font-size: 28px; text-align: left;}
+#user-display { font-size: 14px; color: #777; }
+#logout-btn { background: #e74c3c; color: white; border: none; padding: 10px 16px; border-radius: 8px; cursor: pointer; transition: background-color 0.2s; }
+#logout-btn:hover { background: #c0392b; }
+
+
+#link-form { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
+#link-form input { padding: 14px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 16px; }
+#link-url-input { grid-column: 1 / -1; }
+#link-form button { grid-column: 1 / -1; padding: 14px; background: linear-gradient(45deg, var(--primary-color), var(--secondary-color)); color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; }
+.category-group { margin-bottom: 25px; }
+.category-title { font-size: 20px; font-weight: 600; padding-bottom: 8px; border-bottom: 2px solid var(--border-color); margin-bottom: 15px; }
+.link-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; background-color: #fdfdff; border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 10px; }
+.link-info a { font-weight: 600; color: var(--primary-color); text-decoration: none; }
+.link-info p { font-size: 14px; color: #888; margin: 4px 0 0 0; word-break: break-all; }
+.delete-btn { background: none; border: none; font-size: 22px; color: #aaa; cursor: pointer; transition: color 0.2s; }
+.delete-btn:hover { color: #e74c3c; }

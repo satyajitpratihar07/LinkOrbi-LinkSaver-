@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkOrrbi | Your Personal Link Saver</title>
+    
+    <style>
+       
+        
+        :root {
+            --primary-color: #090584;
+            --secondary-color: #2575fc;
+            --background-color: #0c4c74;
+            --container-bg: #a8efeb;
+            --text-color: #0926cd;
+            --border-color: #215ce7;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 700px;
+            background-color: var(--container-bg);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            animation: floatAnimation 6s ease-in-out infinite;
+        }
+
+        h1 { text-align: center; color: var(--primary-color); }
+        .hidden { display: none; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes floatAnimation {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        #app-view, #auth-view { animation: fadeIn 0.5s ease-out; }
+        #auth-view { text-align: center; }
+        #auth-view p { color: #666; margin-bottom: 20px; }
+
+        #login-form, #signup-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        #login-form input, #signup-form input, #link-form input {
+            padding: 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        #login-form input:focus, #signup-form input:focus, #link-form input:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 8px rgba(37, 117, 252, 0.5);
+        }
+
+        #login-form button, #signup-form button, #link-form button {
+            padding: 14px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        #login-form button:hover, #signup-form button:hover, #link-form button:hover { 
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-switcher { font-size: 14px; }
+        .form-switcher a { color: var(--primary-color); text-decoration: none; font-weight: 600; cursor: pointer; }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: #aaa;
+            margin: 25px 0;
+        }
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .divider:not(:empty)::before { margin-right: .5em; }
+        .divider:not(:empty)::after { margin-left: .5em; }
+
+        #google-login-btn {
+            width: 100%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 16px;
+            background-color: #fff;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        #google-login-btn:hover { 
+            background-color: #e9eef4;
+            transform: translateY(-2px);
+        }
+        #google-login-btn img { width: 20px; margin-right: 12px; }
+
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        header h1 { margin: 0; font-size: 28px; text-align: left;}
+        #user-display { font-size: 14px; color: #777; }
+
+        #logout-btn { 
+            background: #163f9f; 
+            color: rgb(229, 211, 20); 
+            border: none; 
+            padding: 10px 16px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+        #logout-btn:hover { 
+            background: #c0392b;
+            transform: scale(1.05);
+        }
+
+        #link-form { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
+        #link-url-input { grid-column: 1 / -1; }
+        
+        .category-group { margin-bottom: 25px; }
+        .category-title { font-size: 20px; font-weight: 600; padding-bottom: 8px; border-bottom: 2px solid var(--border-color); margin-bottom: 15px; }
+        
+        .link-item { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 15px; 
+            background-color: #fdfdff; 
+            border: 1px solid var(--border-color); 
+            border-radius: 8px; 
+            margin-bottom: 10px; 
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .link-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .link-info a { font-weight: 600; color: var(--primary-color); text-decoration: none; }
+        .link-info p { font-size: 14px; color: #888; margin: 4px 0 0 0; word-break: break-all; }
+        
+        .delete-btn { 
+            background: none; 
+            border: none; 
+            font-size: 22px; 
+            color: #aaa; 
+            cursor: pointer; 
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+        .delete-btn:hover { 
+            color: #e74c3c; 
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="auth-view">
+            <h1>Welcome to LinkOrbi</h1>
+            
+            <div id="login-view">
+                <p>Sign in to access your links.</p>
+                <form id="login-form">
+                    <input type="email" id="login-email" placeholder="Email Address" required>
+                    <input type="password" id="login-password" placeholder="Password" required>
+                    <button type="submit">Login</button>
+                </form>
+                <p class="form-switcher">No account? <a id="show-signup">Sign Up</a></p>
+            </div>
+
+            <div id="signup-view" class="hidden">
+                 <p>Create an account to get started.</p>
+                <form id="signup-form">
+                    <input type="text" id="signup-username" placeholder="Username" required>
+                    <input type="email" id="signup-email" placeholder="Email Address" required>
+                    <input type="password" id="signup-password" placeholder="Password" required>
+                    <button type="submit">Create Account</button>
+                </form>
+                <p class="form-switcher">Already have an account? <a id="show-login">Login</a></p>
+            </div>
+
+            <div class="divider">OR</div>
+            
+            <button id="google-login-btn">
+                <img src="https://www.google.com/favicon.ico" alt="Google icon">
+                Continue with Google
+            </button>
+
+            <p class="form-switcher" style="margin-top: 15px;">
+                <a id="device-account-login">Continue with a device account</a>
+            </p>
+            </div>
+
+        <div id="app-view" class="hidden">
+            <header>
+                <div class="welcome-message">
+                    <h1>My Links 🚀</h1>
+                    <span id="user-display"></span>
+                </div>
+                <button id="logout-btn">Logout</button>
+            </header>
+
+            <form id="link-form">
+                <input type="text" id="link-title-input" placeholder="Link Title (e.g., 'React Docs')" required>
+                <input type="url" id="link-url-input" placeholder="https://example.com" required>
+                <input type="text" id="link-category-input" placeholder="Category (e.g., 'Work', 'Study')" required>
+                <button type="submit">Add Link</button>
+            </form>
+
+            <div id="links-container">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+        
+            const authView = document.getElementById('auth-view');
+            const appView = document.getElementById('app-view');
+            const userDisplay = document.getElementById('user-display');
+
+            const loginView = document.getElementById('login-view');
+            const signupView = document.getElementById('signup-view');
+            const loginForm = document.getElementById('login-form');
+            const signupForm = document.getElementById('signup-form');
+            const showSignupBtn = document.getElementById('show-signup');
+            const showLoginBtn = document.getElementById('show-login');
+            const googleLoginBtn = document.getElementById('google-login-btn');
+            const logoutBtn = document.getElementById('logout-btn');
+
+            
+            
+            const deviceAccountLoginBtn = document.getElementById('device-account-login');
+            
+            
+
+            const linkForm = document.getElementById('link-form');
+            const titleInput = document.getElementById('link-title-input');
+            const urlInput = document.getElementById('link-url-input');
+            const categoryInput = document.getElementById('link-category-input');
+            const linksContainer = document.getElementById('links-container');
+
+            let links = JSON.parse(localStorage.getItem('userLinks')) || [];
+            
+            const performLogin = (email) => {
+                console.log(`Simulating login for: ${email}`);
+                sessionStorage.setItem('isLoggedIn', 'true');
+                sessionStorage.setItem('userEmail', email);
+                updateView();
+            };
+
+            const updateView = () => {
+                const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+                if (isLoggedIn) {
+                    authView.classList.add('hidden');
+                    appView.classList.remove('hidden');
+                    userDisplay.textContent = `Signed in as ${sessionStorage.getItem('userEmail')}`;
+                    displayLinks();
+                } else {
+                    authView.classList.remove('hidden');
+                    appView.classList.add('hidden');
+                    userDisplay.textContent = '';
+                }
+            };
+        
+            showSignupBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                loginView.classList.add('hidden');
+                signupView.classList.remove('hidden');
+            });
+
+            showLoginBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                signupView.classList.add('hidden');
+                loginView.classList.remove('hidden');
+            });
+
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = document.getElementById('login-email').value;
+                performLogin(email);
+            });
+
+            signupForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = document.getElementById('signup-email').value;
+                performLogin(email);
+            });
+
+            googleLoginBtn.addEventListener('click', () => {
+                performLogin('user@google.com');
+                
+            });
+
+            
+            
+            deviceAccountLoginBtn.addEventListener('click', async (e) => {
+                e.preventDefault();
+                
+                
+                
+                if (!navigator.credentials) {
+                    alert("Your browser does not support this feature. Please log in manually.");
+                    return;
+                }
+
+                try {
+                    
+                    
+                    const credential = await navigator.credentials.get({
+                        federated: {
+                            providers: ['https://accounts.google.com']
+                        }
+                    });
+
+                   
+                    
+                    const email = credential.id;
+                    console.log('Credential selected:', credential);
+                    performLogin(email);
+
+                } catch (err) {
+                    console.error("Error getting credential:", err);
+                    alert("Could not get a credential. The user may have cancelled the request.");
+                }
+            });
+            
+            
+            logoutBtn.addEventListener('click', () => {
+                console.log('Logging out.');
+                sessionStorage.clear();
+                updateView();
+            });
+
+            const saveLinks = () => {
+                localStorage.setItem('userLinks', JSON.stringify(links));
+            };
+
+            const displayLinks = () => {
+                linksContainer.innerHTML = '';
+                if (links.length === 0) {
+                    linksContainer.innerHTML = '<p style="text-align: center; color: #888;">No links saved yet. Add one above!</p>';
+                    return;
+                }
+                const groupedLinks = links.reduce((acc, link) => {
+                    const category = link.category || 'Uncategorized';
+                    if (!acc[category]) acc[category] = [];
+                    acc[category].push(link);
+                    return acc;
+                }, {});
+                for (const category in groupedLinks) {
+                    const groupDiv = document.createElement('div');
+                    groupDiv.className = 'category-group';
+                    groupDiv.innerHTML = `<h2 class="category-title">${category}</h2>`;
+                    groupedLinks[category].forEach(link => {
+                        const linkItem = document.createElement('div');
+                        linkItem.className = 'link-item';
+                        linkItem.innerHTML = `<div class="link-info"><a href="${link.url}" target="_blank">${link.title}</a><p>${link.url}</p></div><button class="delete-btn" data-id="${link.id}">✖</button>`;
+                        groupDiv.appendChild(linkItem);
+                    });
+                    linksContainer.appendChild(groupDiv);
+                }
+            };
+            
+            linkForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                links.push({ id: Date.now(), title: titleInput.value.trim(), url: urlInput.value.trim(), category: categoryInput.value.trim() });
+                saveLinks();
+                displayLinks();
+                linkForm.reset();
+            });
+
+            linksContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('delete-btn')) {
+                    const linkId = parseInt(e.target.getAttribute('data-id'));
+                    links = links.filter(link => link.id !== linkId);
+                    saveLinks();
+                    displayLinks();
+                }
+            });
+
+            updateView();
+        });
+    </script>
+</body>
+</html>
